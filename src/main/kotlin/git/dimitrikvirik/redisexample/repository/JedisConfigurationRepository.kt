@@ -7,11 +7,16 @@ import redis.clients.jedis.Jedis
 interface JedisConfigurationRepository {
     val type: ConfigurationStorageType
 
+
     fun getDefault(): Jedis?
 
     fun get(id: String): Jedis?
 
+    fun getAll(): List<Jedis>
+
     fun save(server: RedisServer)
 
     fun delete(id: String)
+
+    fun doReplication()
 }

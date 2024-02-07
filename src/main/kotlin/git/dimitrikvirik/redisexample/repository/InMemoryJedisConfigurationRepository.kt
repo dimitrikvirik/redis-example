@@ -7,6 +7,9 @@ import org.slf4j.Logger
 import redis.clients.jedis.Jedis
 import java.util.concurrent.locks.ReentrantLock
 
+/**
+ * Configuration class for Spring Security.
+ */
 
 class InMemoryJedisConfigurationRepository(
     private val defaultJedis: JedisWrapper?

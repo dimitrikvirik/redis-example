@@ -16,9 +16,15 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.env.Environment
 import redis.clients.jedis.Jedis
 
+/**
+ * Configuration class for Redis-related beans and dependencies.
+ */
 @Configuration
 class RedisConfig {
 
+    /**
+     * Configures and provides a JedisWrapper bean based on the application properties.
+     */
     @ConditionalOnProperty(name = ["redis.host"], matchIfMissing = false)
     @Bean
     fun jedisWrapper(env: Environment): JedisWrapper {
@@ -30,13 +36,18 @@ class RedisConfig {
         )
     }
 
+    /**
+     * Configures and provides a Jedis bean based on the JedisWrapper bean.
+     */
     @ConditionalOnBean(JedisWrapper::class)
     @Bean
     fun jedis(jedis: JedisWrapper): Jedis {
         return jedis.jedis
-
     }
 
+    /**
+     * Configures and provides an InMemoryJedisConfigurationRepository bean based on the JedisWrapper bean and environment.
+     */
     @Bean
     fun inMemoryJedisConfigurationRepository(
         jedis: ObjectFactory<JedisWrapper>,
@@ -47,14 +58,14 @@ class RedisConfig {
         } catch (e: NoSuchBeanDefinitionException) {
             null
         }
-        return InMemoryJedisConfigurationRepository(
-            defaultJedis
-        )
+        return InMemoryJedisConfigurationRepository(defaultJedis)
     }
 
+    /**
+     * Configures and provides a CacheProvider bean for Foo objects based on the JedisConfigurationRepository bean.
+     */
     @Bean
     fun fooRedis(jedisConfigurationRepository: JedisConfigurationRepository): CacheProvider<String, Foo> {
-
         return CacheTemplate {
             jedisConfigurationRepository.getAll().map {
                 RedisJsonCacheProvider(it, Foo::class.java)
@@ -62,6 +73,9 @@ class RedisConfig {
         }
     }
 
+    /**
+     * Configures and provides a default CacheTemplate bean for String keys based on the JedisConfigurationRepository bean.
+     */
     @Bean
     fun defaultRedis(jedisConfigurationRepository: JedisConfigurationRepository): CacheTemplate<String> {
         return CacheTemplate {
@@ -70,6 +84,4 @@ class RedisConfig {
             }
         }
     }
-
-
 }

@@ -1,9 +1,23 @@
 version: '3.7'
 
 services:
-  redis:
+  redis1:
     image: redis:latest
     ports:
-      - "6379:6379"
-    command: ["redis-server", "--appendonly", "no", "--maxmemory", "500mb", "--maxmemory-policy", "allkeys-lru"]
-
+      - "6000:6379"
+    command: ["redis-server", "--appendonly", "no", "--maxmemory", "10mb", "--maxmemory-policy", "allkeys-lru"]
+  redis2:
+    image: redis:latest
+    ports:
+      - "6001:6379"
+    command: ["redis-server", "--appendonly", "no", "--maxmemory", "10mb", "--maxmemory-policy", "allkeys-lru"]
+  redis3:
+    image: redis:latest
+    ports:
+      - "6002:6379"
+    command: [ "redis-server", "--appendonly", "no", "--maxmemory", "10mb", "--maxmemory-policy", "allkeys-lru" ]
+  redis4:
+    image: redis:latest
+    ports:
+      - "6003:6379"
+    command: [ "redis-server", "--appendonly", "no", "--maxmemory", "10mb", "--maxmemory-policy", "allkeys-lru" ]

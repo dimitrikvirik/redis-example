@@ -17,6 +17,8 @@ class RedisJsonCacheProvider<V>(
     override fun get(key: String): V? {
         val json = jedis.get(key) ?: return null
 
+        if(klass.simpleName == "String")
+            return json as V
         return objectMapper.readValue(json, klass)
     }
 
@@ -113,6 +115,7 @@ class RedisJsonCacheProvider<V>(
         }
         return false
     }
+
 
     override fun replace(key: String, oldValue: V, newValue: V): Boolean {
         val json = jedis.get(key) ?: return false

@@ -6,13 +6,11 @@ import org.springframework.stereotype.Service
 
 @Service
 class RedisReplicationScheduler(
-    val jedisRepositories: List<JedisConfigurationRepository>
+    val jedisRepository: JedisConfigurationRepository
 ) {
 
     @Scheduled(fixedDelayString = "\${redis.replicationDelay:5000}")
     fun replicate() {
-        jedisRepositories.forEach {
-            it.doReplication()
-        }
+        jedisRepository.doReplication()
     }
 }

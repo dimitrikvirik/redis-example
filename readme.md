@@ -3,3 +3,5 @@
 # Login
  - username: admin
  - password: admin
+# Redis
+ you can just docker-compose up 
